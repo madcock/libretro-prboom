@@ -281,6 +281,24 @@ else ifeq ($(platform), emscripten)
    CFLAGS += -DHAVE_STRLWR
    STATIC_LINKING = 1
 
+# SF2000
+else ifeq ($(platform), sf2000)
+	TARGET := $(TARGET_NAME)_libretro_$(platform).a
+	MIPS=/opt/mips32-mti-elf/2019.09-03-2/bin/mips-mti-elf-
+	# MIPS=EMIT_EXT_INS=1 /home/icemano/x-tools/mipsel-unknown-elf/bin/mips-mti-elf-
+	CC = $(MIPS)gcc
+	CXX = $(MIPS)g++
+	AR = $(MIPS)ar
+	CFLAGS =-EL -march=mips32 -mtune=mips32 -msoft-float -ffast-math
+	CFLAGS+=-G0 -mno-abicalls -fno-pic
+	# -ffreestanding
+	CFLAGS+=-I../..
+	CFLAGS+=-DSF2000 -DHAVE_STRL
+    CFLAGS+= -DHAVE_STRLWR
+	CXXFLAGS=$(CFLAGS) -fno-use-cxa-atexit
+	STATIC_LINKING = 1
+	HAVE_LOW_MEMORY = 1
+
 else ifeq ($(platform), xenon)
    EXT=a
    TARGET := $(TARGET_NAME)_libretro_xenon360.$(EXT)

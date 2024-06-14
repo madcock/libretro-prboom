@@ -674,7 +674,14 @@ static char *FindIWADFile(void)
   lprintf(LO_DEBUG, "i: %d\n", i);
 
   for(x = 0; x < 32; x++)
+#if !defined(SF2000)
      lprintf(LO_DEBUG, "myargv[%d]: %s\n", x, myargv[x]);
+#else
+  {
+     if(myargv[x])
+        lprintf(LO_DEBUG, "myargv[%d]: %s\n", x, myargv[x]);
+  }
+#endif
 
   if (i && (++i < myargc)) {
     iwad = I_FindFile(myargv[i], NULL);
@@ -1030,7 +1037,9 @@ bool D_DoomMainSetup(void)
 {
   int p;
 
+#if !defined(SF2000)
   setbuf(stdout,NULL);
+#endif
 
   // proff 04/05/2000: Added support for include response files
   /* proff 2001/7/1 - Moved up, so -config can be in response files */
